@@ -1,56 +1,294 @@
 .listContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
   padding: 20px;
   max-width: 550px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
+  perspective: 1000px;
 }
 
 .cardPair {
   display: flex;
   flex-direction: column;
   gap: 0;
+  position: relative;
+  cursor: pointer;
 }
 
-.card1 {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+/* کارت اصلی */
+.mainCard {
   position: relative;
   width: 530px;
   height: 140px;
-  padding: 0.5rem 1rem;
-  border-radius: 0.75rem 0.75rem 0 0;
-  background-color: #f5f5f5;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px 12px 8px 8px;
+  background-color: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+  transform-origin: top center;
+}
+
+.mainCardExpanded {
+  height: 180px;
+  background-color: #ffffff;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  margin-bottom: 5px;
+}
+
+/* محتوای کارت */
+.cardContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  transition: all 0.4s ease;
+}
+
+.frontContent {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.frontContent.hidden {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+.expandedContent {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.expandedContent.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* استایل‌های محتوای توسعه یافته */
+.expandedHeader {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.expandedHeader h3 {
   margin: 0;
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 14px;
+  color: #333;
 }
 
-.card1:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.card2 {
+.airlineInfo {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  position: relative;
-  width: 530px;
-  height: 140px;
-  padding: 0.5rem 1rem;
-  border-radius: 0 0 0.75rem 0.75rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #e0e0e0;
-  margin-top: -4px;
-  overflow: hidden;
-  border-top: 2px dashed black;
+  gap: 8px;
+  font-size: 12px;
+  color: #666;
 }
 
+.flightSummary {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: bold;
+}
+
+.city {
+  font-size: 16px;
+  color: #333;
+}
+
+.airplane {
+  display: flex;
+  align-items: center;
+}
+
+.imageSmall {
+  width: 30px;
+  height: 30px;
+  opacity: 0.7;
+}
+
+.timeInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.timeBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d01e44;
+}
+
+.date {
+  font-size: 11px;
+  color: #666;
+}
+
+.duration {
+  font-size: 12px;
+  color: #888;
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border-radius: 12px;
+}
+
+.quickActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.actionBtn,
+.bookBtn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.bookBtn {
+  background: #d01e44;
+  color: white;
+  font-weight: bold;
+}
+
+/* کارت پایینی */
+.bottomCard {
+  position: relative;
+  width: 530px;
+  height: 0;
+  border-radius: 0 0 12px 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top center;
+  z-index: 2;
+}
+
+.bottomCardExpanded {
+  height: 280px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.bottomCardContent {
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease 0.2s;
+}
+
+.bottomCardExpanded .bottomCardContent {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bottomCardContent h4 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  border-bottom: 2px dashed #ddd;
+  padding-bottom: 8px;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.detailSection h5 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #d01e44;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.detailItem .total {
+  font-weight: bold;
+  color: #333;
+}
+
+.finalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.primaryBtn {
+  background: #d01e44;
+  color: white;
+  font-weight: bold;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #d01e44;
+  border: 1px solid #d01e44;
+}
+
+/* استایل‌های مشترک */
 .ribbon {
   position: absolute;
   top: 15px;
@@ -69,9 +307,15 @@
   width: 100px;
 }
 
-.ribbon::before,
-.ribbon::after {
-  display: none;
+.prices {
+  position: absolute;
+  border: 2px dashed rgb(225, 88, 88);
+  bottom: 4px;
+  padding: 2px;
+  border-radius: 5px;
+  width: 100px;
+  text-align: center;
+  font-weight: 600;
 }
 
 .dates {
@@ -82,7 +326,6 @@
   color: #a3a3a3;
   font-size: 14px;
   font-weight: 500;
-  position: relative;
 }
 
 .dates p {
@@ -107,13 +350,218 @@
   font-weight: 600;
 }
 
-.prices {
-  position: absolute;
-  border: 2px dashed rgb(225, 88, 88);
-  bottom: 4px;
-  padding: 2px;
-  border-radius: 5px;
-  width: 100px;
-  text-align: center;
+.cart2 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.cart3detailse1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cart3details2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cart3details2 p:first-child {
   font-weight: 600;
+  color: #333;
+  font-size: 17px;
+}
+
+.animate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 60px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.animate::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  right: -20px;
+  height: 12px;
+  background: radial-gradient(
+      circle at 0px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 15px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 30px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 45px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 60px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 75px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 90px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 105px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 120px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 135px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 150px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 165px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 180px 50%,
+      #d01e44 0%,
+      #d01e44 3px,
+      transparent 4px
+    );
+  transform: translateY(-50%);
+  animation: movingCircles 1.5s infinite linear;
+  opacity: 0.7;
+}
+
+.animate .image {
+  width: 30px;
+  height: 30px;
+  animation: flyStraight 3s infinite linear;
+  z-index: 2;
+  position: relative;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  transform: rotate(0deg) !important;
+}
+
+.animate div {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d01e44;
+  position: relative;
+  z-index: 3;
+  animation: dotGlow 2s infinite ease-in-out;
+  box-shadow: 0 0 15px rgba(208, 30, 68, 0.6);
+}
+
+/* انیمیشن حرکت هواپیما به صورت صاف */
+@keyframes flyStraight {
+  0% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(150px);
+  }
+}
+
+/* انیمیشن حرکت دایره‌ها */
+@keyframes movingCircles {
+  0% {
+    transform: translateY(-50%) translateX(0);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-15px);
+  }
+}
+
+/* انیمیشن درخشش نقطه */
+@keyframes dotGlow {
+  0%,
+  100% {
+    background-color: #d01e44;
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(208, 30, 68, 0.6);
+  }
+  50% {
+    background-color: #ff6b8b;
+    transform: scale(1.3);
+    box-shadow: 0 0 20px rgba(208, 30, 68, 0.9);
+  }
+}
+
+/* وقتی هاور می‌شود سرعت افزایش یابد */
+.animate:hover .image {
+  animation-duration: 1.5s;
+}
+
+.animate:hover::before {
+  animation-duration: 0.8s;
+}
+
+.animate:hover div {
+  animation-duration: 1s;
+}
+
+.allanimate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prices2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  background-color: rgb(197, 192, 192);
+  color: rgb(72, 70, 70);
+  font-weight: bold;
+  width: 100px;
+  height: 33px;
 }
