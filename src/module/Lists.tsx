@@ -43,6 +43,23 @@ const List: React.FC<ListProps> = ({ token }) => {
     }
   };
 
+  const getFlightDuration = (startTime: string, endTime: string) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    let diffMs = end.getTime() - start.getTime();
+
+    if (diffMs < 0) {
+      diffMs += 24 * 60 * 60 * 1000;
+    }
+
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const hours = Math.floor(diffMinutes / 60);
+    const minutes = diffMinutes % 60;
+
+    return `${hours}h ${minutes}m`;
+  };
+
   if (loading) return <p>Loading flights...</p>;
   if (!flights.length) return <p>No flights found.</p>;
 
@@ -168,72 +185,145 @@ const List: React.FC<ListProps> = ({ token }) => {
             </div>
           </div>
 
-          {/* بخش پایینی که مثل کتاب باز می‌شود */}
           <div
             className={`${styles.bottomCard} ${
               expandedCard === index ? styles.bottomCardExpanded : ""
             }`}
           >
             <div className={styles.bottomCardContent}>
-              <h4>اطلاعات تکمیلی</h4>
+              <div className={styles.cart2}>
+                <div className={styles.cart3detailse1}>
+                  <div className={styles.cart3details2}>
+                    <p
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "700",
+                        color: "#746969ff",
+                        textAlign: "center",
+                      }}
+                    >
+                      {" "}
+                      {formatTime(items.src.time)} -{" "}
+                      {formatTime(items.dst.time)}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "300",
+                        color: "#746969ff",
+                        textAlign: "center",
+                      }}
+                    >
+                      {" "}
+                      Fligh Time
+                    </p>
+                  </div>
 
-              <div className={styles.detailsGrid}>
-                <div className={styles.detailSection}>
-                  <h5>جزئیات پرواز</h5>
-                  <div className={styles.detailItem}>
-                    <span>شماره پرواز:</span>
-                    <span>{items.flightNumber}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <span>نوع هواپیما:</span>
-                    <span>بوئینگ 737</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <span>کلاس:</span>
-                    <span>{items.class}</span>
+                  <div className={styles.cart3details2}>
+                    <p>{!items.transfer ? "No" : "Yes"}</p>
+                    <p>Transfer</p>
                   </div>
                 </div>
 
-                <div className={styles.detailSection}>
-                  <h5>خدمات</h5>
-                  <div className={styles.detailItem}>
-                    <span>بار مجاز:</span>
-                    <span>25 کیلوگرم</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <span>غذا:</span>
-                    <span>شامل شده</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <span>وای فای:</span>
-                    <span>رایگان</span>
+                <div className={styles.cart3details2}>
+                  <p
+                    style={{
+                      fontSize: "18px",
+                      color: "#666",
+                      textAlign: "center",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {getFlightDuration(items.src.time, items.dst.time)}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "300",
+                      color: "#746969ff",
+                      textAlign: "center",
+                    }}
+                  >
+                    Duration
+                  </p>
+
+                  <div className={styles.gapgate}>
+                    <p
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "700",
+                        color: "#746969ff",
+                        textAlign: "center",
+                      }}
+                    >
+                      {items.gates}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "300",
+                        color: "#746969ff",
+                        textAlign: "center",
+                      }}
+                    >
+                      Gate
+                    </p>
                   </div>
                 </div>
 
-                <div className={styles.detailSection}>
-                  <h5>قیمت‌گذاری</h5>
-                  <div className={styles.detailItem}>
-                    <span>قیمت پایه:</span>
-                    <span>${Math.round(items.price * 0.7)}</span>
+                <div className={styles.cart4details}>
+                  <div>
+                    <div className={styles.cart3details2}>
+                      <p
+                        style={{
+                          fontSize: "24px",
+                          fontWeight: "700",
+                          color: "#746969ff",
+                          textAlign: "center",
+                        }}
+                      >
+                        {formatTime(items.dst.time)}
+                      </p>
+                      <p
+                        style={{
+                          fontSize: "16px",
+                          fontWeight: "300",
+                          color: "#746969ff",
+                          textAlign: "center",
+                        }}
+                      >
+                        boarding
+                      </p>
+                    </div>
                   </div>
-                  <div className={styles.detailItem}>
-                    <span>مالیات:</span>
-                    <span>${Math.round(items.price * 0.2)}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <span>خدمات:</span>
-                    <span>${Math.round(items.price)}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <span className={styles.total}>مجموع:</span>
-                    <span className={styles.total}>${items.price}</span>
+
+                  <div>
+                    <div className={styles.cart3details2}>
+                      <p
+                        style={{
+                          fontSize: "24px",
+                          fontWeight: "700",
+                          color: "#746969ff",
+                          textAlign: "center",
+                        }}
+                      >
+                        {" "}
+                        {items.seat}
+                      </p>
+                      <p
+                        style={{
+                          fontSize: "16px",
+                          fontWeight: "300",
+                          color: "#746969ff",
+                          textAlign: "center",
+                        }}
+                      >
+                        {" "}
+                        Set
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div className={styles.finalActions}>
-                <button className={styles.secondaryBtn}>مشاهده صندلی‌ها</button>
-                <button className={styles.primaryBtn}>تکمیل رزرو</button>
               </div>
             </div>
           </div>
