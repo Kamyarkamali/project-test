@@ -1,20 +1,32 @@
 import {
   BrowserRouter as Router,
-  Routes,
+  Routes as ReactRoutes,
   Route,
   Navigate,
 } from "react-router-dom";
 import Login from "./login/Login";
+import Dashboard from "./dashboard/Dashboard";
+import ProtectedRoute from "../components/common/ProtectedRoute";
 
-function AppRoutes() {
+const AppRoutes: React.FC = () => {
   return (
     <Router>
-      <Routes>
+      <ReactRoutes>
         <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+      </ReactRoutes>
     </Router>
   );
-}
+};
 
 export default AppRoutes;

@@ -13,3 +13,8 @@ export interface ToastProps {
   type: "success" | "error";
   onClose: () => void;
 }
+
+export interface ErrorPopupProps {
+  message: string;
+  onClose: () => void;
+}

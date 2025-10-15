@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Loader from "../../components/Loader/Loader";
 import { login } from "../../services/auth";
 import Toast from "../../components/Toast/Toast";
+import ErrorPopup from "../../components/ErrorPopup/ErrorPopup";
 import { LoginResponse } from "../../types/interfaces";
 
 const Login: React.FC = () => {
@@ -13,6 +15,9 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastType, setToastType] = useState<"success" | "error">("success");
+  const [errorPopup, setErrorPopup] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const handleLogin = async (): Promise<void> => {
     setLoading(true);
@@ -23,13 +28,14 @@ const Login: React.FC = () => {
         localStorage.setItem("token", data.token);
         setToastMessage("Login successful! Welcome!");
         setToastType("success");
+
+        // هدایت به داشبورد بعد از چند میلی‌ثانیه
+        setTimeout(() => navigate("/dashboard"), 500);
       } else {
-        setToastMessage("Incorrect username or password");
-        setToastType("error");
+        setErrorPopup("Wrong username or password");
       }
     } catch (err) {
-      setToastMessage("Server error. Please try again.");
-      setToastType("error");
+      setErrorPopup("Server error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +75,7 @@ const Login: React.FC = () => {
         <button
           onClick={handleLogin}
           className={styles.button}
-          disabled={loading}
+          disabled={loading || !username || !password}
         >
           {loading ? (
             <>
@@ -88,6 +94,10 @@ const Login: React.FC = () => {
           type={toastType}
           onClose={() => setToastMessage("")}
         />
+      )}
+
+      {errorPopup && (
+        <ErrorPopup message={errorPopup} onClose={() => setErrorPopup("")} />
       )}
     </div>
   );
