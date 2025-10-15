@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./List.module.css";
 import { Flight } from "../types/interfaces";
 import { getFlightList } from "../services/auth";
+import { useFormatTime } from "../hooks/useFormatTime";
+import { formatDate } from "../hooks/useFormattedDate";
+
+import image from "../assets/images/airplane.png";
 
 interface ListProps {
   token: string;
@@ -10,6 +14,8 @@ interface ListProps {
 const List: React.FC<ListProps> = ({ token }) => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const { formatTime } = useFormatTime();
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -27,26 +33,51 @@ const List: React.FC<ListProps> = ({ token }) => {
     fetchFlights();
   }, [token]);
 
-  // تابع برای فرمت کردن تاریخ
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", { month: "long", day: "numeric" });
-  };
-
-  // تابع برای فرمت کردن زمان
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: false,
-    });
-  };
-
   if (loading) return <p>Loading flights...</p>;
   if (!flights.length) return <p>No flights found.</p>;
 
-  return <div className={styles.listContainer}></div>;
+  return (
+    <div className={styles.listContainer}>
+      {flights.map((items, index) => (
+        <div key={index} className={styles.cardPair}>
+          {/* کارت اصلی */}
+          <div className={styles.card1}>
+            <p className={styles.prices}>$ {items.price}</p>
+
+            <div>
+              <img className={styles.image2} src={items.logoSrc} alt={image} />
+            </div>
+            <div className={styles.name}>{items.src.country}</div>
+
+            <div className={styles.dates}>
+              <div>{items.src.country}</div>
+              <p>{formatTime(items.src.time)}</p>
+              <div>{formatDate(items.src.time)}</div>
+            </div>
+
+            <div>
+              <img
+                className={styles.image}
+                src={image}
+                alt={items.src.airline}
+              />
+            </div>
+
+            <div className={styles.dates}>
+              <div>{items.dst.country}</div>
+              <p>{formatTime(items.dst.time)}</p>
+              <div>{formatDate(items.dst.time)}</div>
+            </div>
+
+            <p className={styles.ribbon}>{items.class}</p>
+          </div>
+
+          {/* کارت خالی زیر کارت اصلی */}
+          <div className={styles.card2}></div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default List;
