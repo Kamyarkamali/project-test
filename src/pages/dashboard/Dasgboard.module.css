@@ -1,39 +1,54 @@
-.container {
-  padding: 2rem;
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
   font-family: "Poppins", sans-serif;
   background: #f0f4f8;
-  min-height: 100vh;
-  box-sizing: border-box;
 }
 
-.header {
+/* Main content */
+.mainContent {
+  flex: 1;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Sidebar سمت راست */
+.sidebar {
+  width: 250px;
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem;
+  flex-shrink: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.username {
+  font-weight: bold;
 }
 
 .logoutButton {
   background-color: #ef4444;
-  color: white;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 .logoutButton:hover {
   background-color: #dc2626;
 }
 
-.main {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
+/* Cards */
 .card {
   background: white;
   border-radius: 0.75rem;
@@ -71,4 +86,33 @@
 
 .loadMore:hover {
   background-color: #6a4fbf;
+}
+
+.openStatus {
+  color: green;
+  font-weight: bold;
+}
+
+.closedStatus {
+  color: red;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboardContainer {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mainContent {
+    padding: 1rem;
+    grid-template-columns: 1fr;
+  }
 }

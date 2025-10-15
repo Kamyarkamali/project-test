@@ -1,0 +1,175 @@
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.class {
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.logo {
+  max-height: 30px;
+  object-fit: contain;
+}
+
+.route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.arrow {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 20px;
+  padding: 0 10px;
+}
+
+.city {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.time {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+  font-family: "Courier New", monospace;
+}
+
+.date {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1a73e8;
+}
+
+/* ریسپانسیو برای موبایل */
+@media (max-width: 480px) {
+  .listContainer {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .header {
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+  }
+
+  .class {
+    font-size: 14px;
+  }
+
+  .logo {
+    max-height: 25px;
+  }
+
+  .route {
+    margin-bottom: 15px;
+  }
+
+  .arrow {
+    font-size: 18px;
+    margin: 0 15px;
+  }
+
+  .city {
+    font-size: 16px;
+  }
+
+  .time {
+    font-size: 20px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+}
+
+/* ریسپانسیو برای تبلت */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .listContainer {
+    max-width: 600px;
+  }
+
+  .card {
+    padding: 25px;
+  }
+
+  .city {
+    font-size: 20px;
+  }
+
+  .time {
+    font-size: 28px;
+  }
+
+  .price {
+    font-size: 28px;
+  }
+}

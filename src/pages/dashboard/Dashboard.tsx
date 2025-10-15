@@ -1,41 +1,44 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Dasgboard.module.css";
+import Sidebar from "../../components/saidbar/Sidebar";
 import { getUsername } from "../../services/auth";
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: "open" | "closed";
-}
+import { Task } from "../../types/interfaces";
+import List from "../../module/Lists";
 
 const Dashboard: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [visibleTasks, setVisibleTasks] = useState<number>(3);
+  const token = localStorage.getItem("token") || "";
 
   useEffect(() => {
-    // // گرفتن نام کاربری
-    // const fetchUsername = async () => {
-    //   const name = await getUsername();
-    //   setUsername(name);
-    // };
+    const fetchUsername = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
 
-    // گرفتن لیست tasks
-    const fetchTasks = async () => {
-      //   const data: Task[] = await getList({ page: 1, size: 100 });
-      //   setTasks(data);
+      try {
+        const name = await getUsername(token);
+        setUsername(name);
+      } catch {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
     };
 
-    // fetchUsername();
-    fetchTasks();
+    fetchUsername();
   }, []);
 
-  const loadMore = () => {
-    setVisibleTasks((prev) => prev + 3);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   };
 
-  const toggleStatus = (id: string) => {
+  const loadMore = () => setVisibleTasks((prev) => prev + 3);
+
+  const toggleStatus = (id: string) =>
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id
@@ -43,30 +46,35 @@ const Dashboard: React.FC = () => {
           : task
       )
     );
-  };
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <h1>Welcome, {username}</h1>
-        <button
-          className={styles.logoutButton}
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.href = "/login";
-          }}
-        >
-          Logout
-        </button>
-      </header>
+    <div className={styles.dashboardContainer}>
+      <Sidebar username={username} onLogout={handleLogout} />
+      <main className={styles.mainContent}>
+        <List token={token} />
+      </main>
 
-      <main className={styles.main}>
+      <main className={styles.mainContent}>
         {tasks.slice(0, visibleTasks).map((task) => (
           <div key={task.id} className={styles.card}>
-            <h3>{task.title}</h3>
-            <p>{task.description}</p>
-            <p>Status: {task.status}</p>
-            <button onClick={() => toggleStatus(task.id)}>
+            <h3 className={styles.cardTitle}>{task.title}</h3>
+            <p className={styles.cardDesc}>{task.description}</p>
+            <p className={styles.cardStatus}>
+              Status:{" "}
+              <span
+                className={
+                  task.status === "open"
+                    ? styles.openStatus
+                    : styles.closedStatus
+                }
+              >
+                {task.status}
+              </span>
+            </p>
+            <button
+              className={styles.toggleButton}
+              onClick={() => toggleStatus(task.id)}
+            >
               {task.status === "open" ? "Close" : "Open"}
             </button>
           </div>

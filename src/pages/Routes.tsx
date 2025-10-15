@@ -6,14 +6,23 @@ import {
 } from "react-router-dom";
 import Login from "./login/Login";
 import Dashboard from "./dashboard/Dashboard";
-import ProtectedRoute from "../components/common/ProtectedRoute";
+import { ProtectedRoute } from "../components/common/ProtectedRoute";
+import PublicRoute from "../components/common/PublicRoute";
 
 const AppRoutes: React.FC = () => {
   return (
     <Router>
       <ReactRoutes>
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
 
+        {/* صفحات محافظت شده */}
         <Route
           path="/dashboard"
           element={
